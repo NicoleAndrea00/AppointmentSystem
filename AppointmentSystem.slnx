@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="AppoinntmentSystem.Console/AppointmentSystem.Console.csproj" />
+  <Project Path="AppointmentSystem.Web/AppointmentSystem.Web.csproj" />
+</Solution>
