@@ -1,0 +1,49 @@
+﻿@model MediBook.Models.Appointment
+
+@{
+    ViewData["Title"] = "Delete Appointment";
+}
+
+<div class="row justify-content-center mt-4">
+    <div class="col-md-6">
+        <div class="card shadow border-danger">
+            <div class="card-header bg-danger text-white">
+                <h4 class="mb-0">Delete Appointment</h4>
+            </div>
+            <div class="card-body">
+                <p class="lead">Are you sure you want to delete this appointment?</p>
+
+                <table class="table">
+                    <tr>
+                        <th>Patient</th>
+                        <td>@Model.Patient.FullName</td>
+                    </tr>
+                    <tr>
+                        <th>Clinician</th>
+                        <td>Dr. @Model.Clinician.User.FullName</td>
+                    </tr>
+                    <tr>
+                        <th>Date & Time</th>
+                        <td>@Model.AppointmentDate.ToString("dd/MM/yyyy HH:mm")</td>
+                    </tr>
+                    <tr>
+                        <th>Status</th>
+                        <td>@Model.Status</td>
+                    </tr>
+                    <tr>
+                        <th>Notes</th>
+                        <td>@Model.Notes</td>
+                    </tr>
+                </table>
+
+                <form asp-action="Delete" method="post">
+                    @Html.AntiForgeryToken()
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-danger">Yes, Delete</button>
+                        <a asp-action="Index" class="btn btn-outline-secondary">Cancel</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

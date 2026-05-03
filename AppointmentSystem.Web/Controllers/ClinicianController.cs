@@ -1,8 +1,8 @@
-﻿using AppointmentSystem.Web.Data;
+﻿using MediBook.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
-namespace AppointmentSystem.Web.Controllers
+namespace MediBook.Controllers
 {
     public class ClinicianController : Controller
     {

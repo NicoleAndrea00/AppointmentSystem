@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace AppointmentSystem.Web.ViewModels
+namespace MediBook.ViewModels
 {
     public class LoginviewModel
     {

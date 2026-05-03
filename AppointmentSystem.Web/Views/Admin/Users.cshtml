@@ -1,0 +1,47 @@
+﻿@model IEnumerable<MediBook.Models.User>
+
+@{
+    ViewData["Title"] = "Manage Users";
+}
+
+<div class="container mt-4">
+    <div class="row mb-4">
+        <div class="col">
+            <h2>Manage Users</h2>
+            <p class="text-muted">All registered users in the system</p>
+        </div>
+        <div class="col text-end">
+            <a asp-action="Index" class="btn btn-outline-secondary">Back to Dashboard</a>
+        </div>
+    </div>
+
+    <div class="table-responsive">
+        <table class="table table-hover">
+            <thead class="table-dark">
+                <tr>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Role</th>
+                    <th>Registered</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var user in Model)
+                {
+                    <tr>
+                        <td>@user.FullName</td>
+                        <td>@user.Email</td>
+                        <td>
+                            <span class="badge
+                                @(user.Role == "Admin" ? "bg-dark" :
+                                                                    user.Role == "Clinician" ? "bg-primary" : "bg-success")">
+                                @user.Role
+                            </span>
+                        </td>
+                        <td>@user.CreatedAt.ToString("dd/MM/yyyy")</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

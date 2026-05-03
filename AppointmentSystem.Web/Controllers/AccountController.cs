@@ -1,10 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using AppointmentSystem.Web.Data;
-using AppointmentSystem.Web.Models;
-using AppointmentSystem.Web.ViewModels;
+using MediBook.Data;
+using MediBook.Models;
+using MediBook.ViewModels;
 using BCrypt.Net;
 
-namespace AppointmentSystem.Web.Controllers
+namespace MediBook.Controllers
 {
     public class AccountController : Controller
     {
@@ -34,6 +34,30 @@ namespace AppointmentSystem.Web.Controllers
             {
                 ModelState.AddModelError("Email", "An account with this email already exists");
                 return View(model);
+            }
+
+            string profilePictureName = "defaultimg.png";
+            if(model.ProfilePicture !=null && model.ProfilePicture.Length > 0)
+            {
+                // Only allow image files
+                var allowedExtensions = new[] { ".jpg", ".jpeg", ".png", ".gif" };
+                var extension = Path.GetExtension(model.ProfilePicture.FileName).ToLower();
+
+                if (!allowedExtensions.Contains(extension))
+                {
+                    ModelState.AddModelError("ProfilePicture", "Only image files are allowed (jpg, jpeg, png, gif)");
+                    return View(model);
+                }
+
+                // Generate unique filename
+                profilePictureName = $"{Guid.NewGuid()}{extension}";
+                var uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "images", "profiles");
+                var filePath = Path.Combine(uploadsFolder, profilePictureName);
+
+                using (var stream = new FileStream(filePath, FileMode.Create))
+                {
+                    await model.ProfilePicture.CopyToAsync(stream);
+                }
             }
 
             var user = new User
@@ -90,6 +114,7 @@ namespace AppointmentSystem.Web.Controllers
             HttpContext.Session.SetInt32("UserId", user.Id);
             HttpContext.Session.SetString("UserName", user.FullName);
             HttpContext.Session.SetString("UserRole", user.Role);
+            HttpContext.Session.SetString("ProfilePicture", user.ProfilePicture ?? "default.png");
 
             // Redirect based on role
             return user.Role switch

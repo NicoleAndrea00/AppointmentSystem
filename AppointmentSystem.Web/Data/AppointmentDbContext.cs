@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using AppointmentSystem.Web.Models;
+using MediBook.Models;
 
-namespace AppointmentSystem.Web.Data
+namespace MediBook.Data
 {
     public class AppointmentDbContext : DbContext
     {

@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MediBook.Migrations
 {
     [DbContext(typeof(AppointmentDbContext))]
-    [Migration("20260423160918_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20260503132758_AddProfilePicture")]
+    partial class AddProfilePicture
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -106,6 +106,9 @@ namespace MediBook.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PasswordHash")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ProfilePicture")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Role")

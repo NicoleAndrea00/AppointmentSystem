@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace AppointmentSystem.Web.Migrations
+namespace MediBook.Migrations
 {
     /// <inheritdoc />
     public partial class InitialCreate : Migration

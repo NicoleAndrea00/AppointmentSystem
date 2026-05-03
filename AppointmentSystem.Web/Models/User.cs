@@ -1,8 +1,9 @@
-﻿namespace AppointmentSystem.Web.Models
+﻿namespace MediBook.Models
 {
     public class User
     {
         public int Id { get; set; }
+        public string ProfilePicture { get; set; } = "default.png";
         public string FullName { get; set; } = string.Empty;
         public string Email { get; set; } = string.Empty;
         public string PasswordHash { get; set; } = string.Empty;

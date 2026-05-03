@@ -1,4 +1,4 @@
-﻿@model AppointmentSystem.Web.ViewModels.LoginviewModel
+﻿@model MediBook.ViewModels.LoginviewModel
 
 @{
     ViewData["Title"] = "Login";
@@ -24,7 +24,14 @@
 
                     <div class="mb-3">
                         <label asp-for="Password" class="form-label">Password</label>
-                        <input asp-for="Password" type="password" class="form-control" placeholder="Enter your password" />
+                        <div class="input-group">
+                            <input asp-for="Password" type="password" class="form-control"
+                                   placeholder="Enter your password" id="Password" />
+                            <button class="btn btn-outline-secondary" type="button"
+                                    onclick="togglePassword('Password', this)">
+                                <i class="bi bi-eye"></i>
+                            </button>
+                        </div>
                         <span asp-validation-for="Password" class="text-danger"></span>
                     </div>
 
@@ -41,3 +48,18 @@
         </div>
     </div>
 </div>
+@section Scripts {
+    <script>
+        function togglePassword(fieldId, btn) {
+            const input = document.getElementById(fieldId);
+            const icon = btn.querySelector('i');
+            if (input.type === 'password') {
+                input.type = 'text';
+                icon.classList.replace('bi-eye', 'bi-eye-slash');
+            } else {
+                input.type = 'password';
+                icon.classList.replace('bi-eye-slash', 'bi-eye');
+            }
+        }
+    </script>
+}

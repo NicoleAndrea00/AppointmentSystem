@@ -1,4 +1,4 @@
-﻿@model AppointmentSystem.Web.ViewModels.RegisterViewModel
+﻿@model MediBook.ViewModels.RegisterViewModel
 
 @{
     ViewData["Title"] = "Register";
@@ -11,7 +11,7 @@
                 <h4 class="mb-0">Create Account</h4>
             </div>
             <div class="card-body">
-                <form asp-action="Register" method="post">
+                <form asp-action="Register" method="post" enctype="multipart/form-data">
                     @Html.AntiForgeryToken()
 
                     <div asp-validation-summary="All" class="text-danger mb-3"></div>
@@ -30,16 +30,36 @@
 
                     <div class="mb-3">
                         <label asp-for="Password" class="form-label">Password</label>
-                        <input asp-for="Password" type="password" class="form-control" placeholder="Minimum 8 characters" />
+                        <div class="input-group">
+                            <input asp-for="Password" type="password" class="form-control"
+                                   placeholder="Minimum 6 characters" id="Password" />
+                            <button class="btn btn-outline-secondary" type="button"
+                                    onclick="togglePassword('Password', this)">
+                                <i class="bi bi-eye"></i>
+                            </button>
+                        </div>
                         <span asp-validation-for="Password" class="text-danger"></span>
                     </div>
 
                     <div class="mb-3">
                         <label asp-for="ConfirmPassword" class="form-label">Confirm Password</label>
-                        <input asp-for="ConfirmPassword" type="password" class="form-control" placeholder="Repeat your password" />
+                        <div class="input-group">
+                            <input asp-for="ConfirmPassword" type="password" class="form-control"
+                                   placeholder="Repeat your password" id="ConfirmPassword" />
+                            <button class="btn btn-outline-secondary" type="button"
+                                    onclick="togglePassword('ConfirmPassword', this)">
+                                <i class="bi bi-eye"></i>
+                            </button>
+                        </div>
                         <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
                     </div>
 
+                    <div class="mb-3">
+                        <label asp-for="ProfilePicture" class="form-label">Profile Picture (optional)</label>
+                        <input asp-for="ProfilePicture" type="file" class="form-control" accept="image/*" />
+                        <span asp-validation-for="ProfilePicture" class="text-danger"></span>
+                        <small class="text-muted">Leave blank to use default avatar</small>
+                    </div>
                     <div class="mb-3">
                         <label asp-for="Role" class="form-label">Register As</label>
                         <select asp-for="Role" class="form-select">
@@ -59,8 +79,24 @@
                         <span>Already have an account? </span>
                         <a asp-action="Login">Login here</a>
                     </div>
+
                 </form>
             </div>
         </div>
     </div>
 </div>
+@section Scripts {
+    <script>
+        function togglePassword(fieldId, btn) {
+            const input = document.getElementById(fieldId);
+            const icon = btn.querySelector('i');
+            if (input.type === 'password') {
+                input.type = 'text';
+                icon.classList.replace('bi-eye', 'bi-eye-slash');
+            } else {
+                input.type = 'password';
+                icon.classList.replace('bi-eye-slash', 'bi-eye');
+            }
+        }
+    </script>
+}

@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace AppointmentSystem.Web.ViewModels
+namespace MediBook.ViewModels
 {
     public class RegisterViewModel
     {
@@ -17,6 +17,7 @@ namespace AppointmentSystem.Web.ViewModels
         public string ConfirmPassword {  get; set; } = string.Empty;
         [Required]
         public string Role { get; set; } = string.Empty;
+        public IFormFile? ProfilePicture { get; set; }
 
     }
 }

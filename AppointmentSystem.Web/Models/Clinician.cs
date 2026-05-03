@@ -1,4 +1,4 @@
-﻿namespace AppointmentSystem.Web.Models
+﻿namespace MediBook.Models
 {
     public class Clinician
     {

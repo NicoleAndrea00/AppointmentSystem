@@ -1,5 +1,5 @@
 using Microsoft.EntityFrameworkCore;
-using AppointmentSystem.Web.Data;
+using MediBook.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 

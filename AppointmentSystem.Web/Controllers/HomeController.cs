@@ -1,8 +1,8 @@
-using AppointmentSystem.Web.Models;
+using MediBook.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
-namespace AppointmentSystem.Web.Controllers
+namespace MediBook.Controllers
 {
     public class HomeController : Controller
     {
