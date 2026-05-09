@@ -38,7 +38,6 @@
                         <th>Date & Time</th>
                         <th>Patient</th>
                         <th>Status</th>
-                        <th>Notes</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
@@ -47,7 +46,12 @@
                     {
                         <tr>
                             <td>@appointment.AppointmentDate.ToString("dd/MM/yyyy HH:mm")</td>
-                            <td>@appointment.Patient.FullName</td>
+                            <td>
+                                <a asp-action="PatientDetails" asp-route-id="@appointment.Id"
+                                       class="text-decoration-none fw-bold">
+                                    @appointment.Patient.FullName
+                                </a>
+                            </td>
                             <td>
                                 <span class="badge
                                     @(appointment.Status == "Scheduled" ? "bg-primary" :
@@ -56,14 +60,16 @@
                                     @appointment.Status
                                 </span>
                             </td>
-                            <td>@appointment.Notes</td>
                             <td>
                                 @if (appointment.Status == "Scheduled")
                                 {
                                     <a asp-action="Confirm" asp-route-id="@appointment.Id"
-                                           class="btn btn-sm btn-success">
-                                        Confirm
-                                    </a>
+                                       class="btn btn-sm btn-success">Confirm</a>
+                                }
+                                @if (appointment.Status != "Cancelled" && appointment.Status != "Completed")
+                                {
+                                    <a asp-action="Reschedule" asp-route-id="@appointment.Id"
+                                       class="btn btn-sm btn-warning ms-1">Reschedule</a>
                                 }
                             </td>
                         </tr>
