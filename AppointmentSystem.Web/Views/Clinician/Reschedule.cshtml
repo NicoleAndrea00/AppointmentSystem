@@ -1,0 +1,32 @@
+﻿@{
+    ViewData["Title"] = "Reschedule Appointment";
+}
+
+<div class="row justify-content-center mt-4">
+    <div class="col-md-6">
+        <div class="card shadow">
+            <div class="card-header bg-warning">
+                <h4 class="mb-0">Reschedule Appointment</h4>
+            </div>
+            <div class="card-body">
+                <p class="text-muted">Patient: <strong>@ViewBag.PatientName</strong></p>
+
+                <form asp-action="Reschedule" asp-route-id="@ViewBag.AppointmentId" method="post">
+                    @Html.AntiForgeryToken()
+
+                    <div class="mb-3">
+                        <label class="form-label">New Date & Time</label>
+                        <input type="datetime-local" name="appointmentDate"
+                               class="form-control"
+                               value="@ViewBag.CurrentDate" />
+                    </div>
+
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-warning">Confirm Reschedule</button>
+                        <a asp-action="Index" class="btn btn-outline-secondary">Cancel</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
