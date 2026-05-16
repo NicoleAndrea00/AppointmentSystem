@@ -36,8 +36,8 @@ namespace MediBook.Controllers
                 return View(model);
             }
 
-            string profilePictureName = "defaultimg.png";
-            if(model.ProfilePicture !=null && model.ProfilePicture.Length > 0)
+            string profilePictureName = "default.png";
+            if (model.ProfilePicture !=null && model.ProfilePicture.Length > 0)
             {
                 // Only allow image files
                 var allowedExtensions = new[] { ".jpg", ".jpeg", ".png", ".gif" };
@@ -52,6 +52,8 @@ namespace MediBook.Controllers
                 // Generate unique filename
                 profilePictureName = $"{Guid.NewGuid()}{extension}";
                 var uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "images", "profiles");
+                if (!Directory.Exists(uploadsFolder))
+                    Directory.CreateDirectory(uploadsFolder);
                 var filePath = Path.Combine(uploadsFolder, profilePictureName);
 
                 using (var stream = new FileStream(filePath, FileMode.Create))
@@ -66,6 +68,7 @@ namespace MediBook.Controllers
                 Email = model.Email,
                 PasswordHash = BCrypt.Net.BCrypt.HashPassword(model.Password),
                 Role = model.Role,
+                ProfilePicture = profilePictureName,
                 CreatedAt = DateTime.UtcNow
             };
 

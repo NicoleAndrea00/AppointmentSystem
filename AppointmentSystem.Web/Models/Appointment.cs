@@ -5,6 +5,8 @@
         public int Id { get; set; }
         public DateTime AppointmentDate { get; set; }
         public string Status { get; set; } = "Scheduled";
+        public string ConsultationType { get; set; } = "Face to Face";
+
         public string Notes { get; set; } = string.Empty;
         public string ClinicalNotes {  get; set; } = string.Empty;
         public DateTime CreatedAt { get; set; }

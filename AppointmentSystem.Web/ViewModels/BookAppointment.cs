@@ -9,6 +9,8 @@ namespace MediBook.ViewModels
         public int ClinicianId { get; set;  }
         [Required]
         public DateTime AppointmentDate { get; set; }
+        [Required]
+        public string ConsultationType { get; set; } = "Face to Face";
         public string Notes { get; set; } = string.Empty;
         public IEnumerable<SelectListItem> Clinicians { get; set; } = new List<SelectListItem>();
 

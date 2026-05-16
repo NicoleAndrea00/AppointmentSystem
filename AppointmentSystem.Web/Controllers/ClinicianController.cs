@@ -37,6 +37,7 @@ namespace MediBook.Controllers
 
             ViewBag.UserName = HttpContext.Session.GetString("UserName");
             ViewBag.Specialty = clinician.Speciality;
+            ViewBag.ProfilePicture = HttpContext.Session.GetString("ProfilePicture");
 
             return View(appointments);
         }
@@ -197,6 +198,101 @@ namespace MediBook.Controllers
 
             TempData["Success"] = "Appointment rescheduled!";
             return RedirectToAction("Index");
+        }
+
+        // GET: /Clinician/Profile
+        public async Task<IActionResult> Profile()
+        {
+            if (!IsClinician())
+                return RedirectToAction("Login", "Account");
+
+            var userId = HttpContext.Session.GetInt32("UserId");
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == userId);
+            var clinician = await _context.Clinicians.FirstOrDefaultAsync(c => c.UserId == userId);
+
+            if (user == null || clinician == null)
+                return RedirectToAction("Login", "Account");
+
+            var model = new ClinicianProfileViewModel
+            {
+                FullName = user.FullName,
+                Email = user.Email,
+                CurrentProfilePicture = user.ProfilePicture,
+                Specialty = clinician.Speciality,
+            };
+
+            return View(model);
+        }
+
+        // POST: /Clinician/Profile
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Profile(ClinicianProfileViewModel model)
+        {
+            if (!IsClinician())
+                return RedirectToAction("Login", "Account");
+
+            var userId = HttpContext.Session.GetInt32("UserId");
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == userId);
+            var clinician = await _context.Clinicians.FirstOrDefaultAsync(c => c.UserId == userId);
+
+            if (user == null || clinician == null)
+                return RedirectToAction("Login", "Account");
+
+            // Handle profile picture upload
+            if (model.ProfilePicture != null && model.ProfilePicture.Length > 0)
+            {
+                var allowedExtensions = new[] { ".jpg", ".jpeg", ".png", ".gif" };
+                var extension = Path.GetExtension(model.ProfilePicture.FileName).ToLower();
+
+                if (!allowedExtensions.Contains(extension))
+                {
+                    ModelState.AddModelError("ProfilePicture", "Only image files are allowed");
+                    model.CurrentProfilePicture = user.ProfilePicture;
+                    return View(model);
+                }
+
+                // Delete old picture if not default
+                if (user.ProfilePicture != "default.png")
+                {
+                    var oldPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "images", "profiles", user.ProfilePicture);
+                    if (System.IO.File.Exists(oldPath))
+                        System.IO.File.Delete(oldPath);
+                }
+
+                // Save new picture
+                var newFileName = $"{Guid.NewGuid()}{extension}";
+                var uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "images", "profiles");
+                if (!Directory.Exists(uploadsFolder))
+                    Directory.CreateDirectory(uploadsFolder);
+                var filePath = Path.Combine(uploadsFolder, newFileName);
+
+                using (var stream = new FileStream(filePath, FileMode.Create))
+                {
+                    await model.ProfilePicture.CopyToAsync(stream);
+                }
+
+                user.ProfilePicture = newFileName;
+                HttpContext.Session.SetString("ProfilePicture", newFileName);
+            }
+
+            // Update clinician details
+            user.FullName = model.FullName;
+            clinician.Speciality = model.Specialty;
+
+            // Handle password change
+            if (!string.IsNullOrEmpty(model.NewPassword))
+            {
+                user.PasswordHash = BCrypt.Net.BCrypt.HashPassword(model.NewPassword);
+            }
+
+            await _context.SaveChangesAsync();
+
+            // Update session name
+            HttpContext.Session.SetString("UserName", user.FullName);
+
+            TempData["Success"] = "Profile updated successfully!";
+            return RedirectToAction("Profile");
         }
     }
 }

@@ -93,6 +93,7 @@ namespace MediBook.Controllers
                 ClinicianId = model.ClinicianId,
                 AppointmentDate = model.AppointmentDate,
                 Notes = model.Notes,
+                ConsultationType = model.ConsultationType,
                 Status = "Scheduled",
                 CreatedAt = DateTime.UtcNow
             };
@@ -140,7 +141,9 @@ namespace MediBook.Controllers
             {
                 FullName = user.FullName,
                 Email = user.Email,
-                CurrentProfilePicture = user.ProfilePicture
+                CurrentProfilePicture = user.ProfilePicture,
+                InsuranceProvider = user.InsuranceProvider,
+                InsuranceMemberNumber = user.InsuranceMemberNumber
             };
 
             return View(model);
@@ -184,6 +187,8 @@ namespace MediBook.Controllers
                 
                 var newFileName = $"{Guid.NewGuid()}{extension}";
                 var uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "images", "profiles");
+                if (!Directory.Exists(uploadsFolder))
+                    Directory.CreateDirectory(uploadsFolder);
                 var filePath = Path.Combine(uploadsFolder, newFileName);
 
                 using (var stream = new FileStream(filePath, FileMode.Create))
@@ -205,6 +210,8 @@ namespace MediBook.Controllers
                 }
                 user.PasswordHash = BCrypt.Net.BCrypt.HashPassword(model.NewPassword);
             }
+            user.InsuranceProvider = model.InsuranceProvider;
+            user.InsuranceMemberNumber = model.InsuranceMemberNumber;
 
             await _context.SaveChangesAsync();
 
