@@ -1,5 +1,6 @@
 <Solution>
   <Project Path="AppoinntmentSystem.Console/AppointmentSystem.Console.csproj" />
   <Project Path="AppointmentSystem.Web/MediBook.csproj" />
+  <Project Path="MediBook.Playwright/MediBook.Playwright.csproj" />
   <Project Path="Medibook.Tests/Medibook.Tests.csproj" Id="485f64fe-5c80-49f5-9863-c094a1b0e587" />
 </Solution>
