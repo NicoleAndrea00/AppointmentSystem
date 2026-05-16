@@ -2,13 +2,14 @@
 
 namespace MediBook.ViewModels
 {
-    public class ProfileViewModel
+    public class ClinicianProfileViewModel
     {
         public string FullName { get; set; } = string.Empty;
         public string Email { get; set; } = string.Empty;
-        public string InsuranceProvider { get; set; }
-        public string InsuranceMemberNumber { get; set; }
         public string CurrentProfilePicture { get; set; }
+
+        [Required]
+        public string Specialty { get; set; } = string.Empty;
 
         public IFormFile ProfilePicture { get; set; }
 
