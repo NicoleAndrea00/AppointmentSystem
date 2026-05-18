@@ -52,9 +52,9 @@ namespace MediBook.Controllers
 
             if (appointment == null)
                 return RedirectToAction("Index");
-            appointment.Status = "success";
+            appointment.Status = "Confirimed";
             await _context.SaveChangesAsync();
-            TempData["Success"] = "Appointment confirmed";
+            TempData["Confirmed"] = "Appointment confirmed";
             return RedirectToAction("Index");
 
         }
@@ -95,7 +95,7 @@ namespace MediBook.Controllers
                     AppointmentDate = a.AppointmentDate,
                     Status = a.Status,
                     Notes = a.Notes,
-                    ClinicianNotes = a.ClinicalNotes
+                    ClinicalNotes = a.ClinicalNotes
                 }).ToList()
             };
 
@@ -148,7 +148,7 @@ namespace MediBook.Controllers
             await _context.SaveChangesAsync();
 
             TempData["Success"] = "Clinical notes updated!";
-            return RedirectToAction("Index");
+            return RedirectToAction("PatientDetails", new { id = id });
         }
 
    

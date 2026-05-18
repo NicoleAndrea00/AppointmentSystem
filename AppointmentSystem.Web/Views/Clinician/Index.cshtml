@@ -11,7 +11,7 @@
                  alt="Profile Picture"
                  style="width: 60px; height: 60px; object-fit: cover; border-radius: 50%; border: 2px solid #0d6efd;" />
             <div>
-                <h2 class="mb-0">Welcome, Dr. @ViewBag.UserName</h2>
+                <h2 class="mb-0">Dr. @ViewBag.UserName</h2>
                 <p class="text-muted mb-0">@ViewBag.Specialty</p>
             </div>
         </div>
@@ -72,7 +72,7 @@
                                     @appointment.Status
                                 </span>
                             </td>
-                            <td>
+                            <td class="d-flex flex-wrap gap-1">
                                 @if (appointment.Status == "Scheduled")
                                 {
                                     <a asp-action="Confirm" asp-route-id="@appointment.Id"
