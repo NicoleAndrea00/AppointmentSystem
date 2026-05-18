@@ -1,16 +1,17 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Newtonsoft.Json.Serialization;
+using System.ComponentModel.DataAnnotations;
 
 namespace MediBook.ViewModels
 {
     public class RegisterViewModel
     {
-        [Required]
+        [Required (ErrorMessage = "Please enter Full Name")]
         public string FullName { get; set; } = string.Empty;
-        [Required]
-        [EmailAddress]
+        [Required(ErrorMessage = "Please Enter Email")]
+        [EmailAddress(ErrorMessage ="Please Enter Valid Email Address")]
         public string Email {  get; set; } = string.Empty;
         [Required]
-        [MinLength(8)]
+        [MinLength(6, ErrorMessage = "Password must be at least 6 characters")]
         public string Password {  get; set; } = string.Empty;
         [Required]
         [Compare("Password", ErrorMessage = "Passwords do not Match")]
