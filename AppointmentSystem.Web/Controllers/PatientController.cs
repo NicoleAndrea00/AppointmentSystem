@@ -210,6 +210,7 @@ namespace MediBook.Controllers
                 }
                 user.PasswordHash = BCrypt.Net.BCrypt.HashPassword(model.NewPassword);
             }
+            user.FullName = model.FullName;
             user.InsuranceProvider = model.InsuranceProvider;
             user.InsuranceMemberNumber = model.InsuranceMemberNumber;
 
