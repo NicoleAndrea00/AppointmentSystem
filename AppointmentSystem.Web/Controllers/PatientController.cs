@@ -143,7 +143,7 @@ namespace MediBook.Controllers
                 Email = user.Email,
                 CurrentProfilePicture = user.ProfilePicture,
                 InsuranceProvider = user.InsuranceProvider,
-                InsuranceMemberNumber = user.InsuranceMemberNumber
+                InsurancePolicyNumber = user.InsuranceMemberNumber
             };
 
             return View(model);
@@ -212,7 +212,7 @@ namespace MediBook.Controllers
             }
             user.FullName = model.FullName;
             user.InsuranceProvider = model.InsuranceProvider;
-            user.InsuranceMemberNumber = model.InsuranceMemberNumber;
+            user.InsuranceMemberNumber = model.InsurancePolicyNumber;
 
             await _context.SaveChangesAsync();
 
