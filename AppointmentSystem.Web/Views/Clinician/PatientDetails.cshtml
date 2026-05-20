@@ -33,8 +33,8 @@
         <form asp-controller="Clinician" asp-action="AddNotes" asp-route-id="@Model.Appointments.First().Id" method="post">
             @Html.AntiForgeryToken()
             <div class="mb-3">
-                <textarea name="clinicianNotes" class="form-control" rows="4"
-                          placeholder="Enter clinical notes here...">@Model.Appointments.First().ClinicianNotes</textarea>
+                <textarea name="clinicalNotes" class="form-control" rows="4"
+                          placeholder="Enter clinical notes here...">@Model.Appointments.First().ClinicalNotes</textarea>
             </div>
             <button type="submit" class="btn btn-primary">Save Notes</button>
         </form>

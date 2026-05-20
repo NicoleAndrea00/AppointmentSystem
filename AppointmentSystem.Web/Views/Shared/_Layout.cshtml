@@ -1,7 +1,10 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="utf-8" />
+    <meta charset="utf-
+
+
+" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - MediBook</title>
     <script type="importmap"></script>
@@ -14,21 +17,22 @@
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">MediBook</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
-                    </ul>
-                </div>
+                @if (Context.Session.GetString("UserRole") == "Patient")
+                {
+                    <a class="navbar-brand" asp-controller="Patient" asp-action="Index">MediBook</a>
+                }
+                else if (Context.Session.GetString("UserRole") == "Clinician")
+                {
+                    <a class="navbar-brand" asp-controller="Clinician" asp-action="Index">MediBook</a>
+                }
+                else if (Context.Session.GetString("UserRole") == "Admin")
+                {
+                    <a class="navbar-brand" asp-controller="Admin" asp-action="Index">MediBook</a>
+                }
+                else
+                {
+                    <a class="navbar-brand" asp-controller="Account" asp-action="Login">MediBook</a>
+                }
             </div>
         </nav>
     </header>
