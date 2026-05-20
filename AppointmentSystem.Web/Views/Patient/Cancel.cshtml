@@ -1,0 +1,44 @@
+﻿@model MediBook.ViewModels.CancelAppointment
+
+@{
+    ViewData["Title"] = "Cancel Appointment";
+}
+
+<div class="row justify-content-center mt-4">
+    <div class="col-md-6">
+        <div class="card shadow border-danger">
+            <div class="card-header bg-danger text-white">
+                <h4 class="mb-0">Cancel Appointment</h4>
+            </div>
+            <div class="card-body">
+                <p class="text-muted">Clinician: <strong>Dr. @Model.ClinicianName</strong></p>
+                <p class="text-muted">Date: <strong>@Model.AppointmentDate.ToString("dd/MM/yyyy HH:mm")</strong></p>
+
+                <form asp-action="Cancel" method="post">
+                    @Html.AntiForgeryToken()
+                    <input type="hidden" asp-for="AppointmentId" />
+
+                    <div asp-validation-summary="All" class="text-danger mb-3"></div>
+
+                    <div class="mb-3">
+                        <label asp-for="CancellationReason" class="form-label">Reason for Cancellation</label>
+                        <select asp-for="CancellationReason" class="form-select">
+                            <option value="">-- Please select a reason --</option>
+                            <option value="Unable to attend">Unable to attend</option>
+                            <option value="Feeling better / no longer required">Feeling better / no longer required</option>
+                            <option value="Booked with another GP">Booked with another GP</option>
+                            <option value="Personal reasons">Personal reasons</option>
+                            <option value="Other">Other</option>
+                        </select>
+                        <span asp-validation-for="CancellationReason" class="text-danger"></span>
+                    </div>
+
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-danger">Confirm Cancellation</button>
+                        <a asp-action="Index" class="btn btn-outline-secondary">Go Back</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

@@ -95,7 +95,8 @@ namespace MediBook.Controllers
                     AppointmentDate = a.AppointmentDate,
                     Status = a.Status,
                     Notes = a.Notes,
-                    ClinicianNotes = a.ClinicalNotes
+                    ClinicianNotes = a.ClinicalNotes,
+                    CancellationReason = a.CancellationReason
                 }).ToList()
             };
 

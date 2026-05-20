@@ -18,6 +18,7 @@ namespace MediBook.ViewModels
         public string Status { get; set; } = string.Empty;
         public string Notes { get; set; } = string.Empty;
         public string ClinicianNotes { get; set; } = string.Empty;
+        public string CancellationReason { get; set; }
 
 
 
