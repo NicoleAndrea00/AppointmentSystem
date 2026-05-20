@@ -44,6 +44,13 @@
                         <small class="text-muted">Leave blank to keep current picture</small>
                     </div>
                     <hr />
+                    <h6 class="text-muted mb-3">Personal Details</h6>
+                    <div class="mb-3">
+                        <label asp-for="FullName" class="form-label">Full Name</label>
+                        <input asp-for="FullName" class="form-control" />
+                        <span asp-validation-for="FullName" class="text-danger"></span>
+                    </div>
+                    <hr />
 
                     <h6 class="text-muted mb-3">Medical Insurance</h6>
 
