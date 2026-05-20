@@ -22,6 +22,8 @@
                     <th>Name</th>
                     <th>Email</th>
                     <th>Role</th>
+                    <th>InsuranceProvider</th>
+                    <th>InsurancePolicyNumber</th>
                     <th>Registered</th>
                 </tr>
             </thead>
@@ -38,6 +40,8 @@
                                 @user.Role
                             </span>
                         </td>
+                        <td>@(user.InsuranceProvider ?? "None")</td>
+                        <td>@(user.InsuranceMemberNumber?? "-")</td>
                         <td>@user.CreatedAt.ToString("dd/MM/yyyy")</td>
                     </tr>
                 }

@@ -7,7 +7,7 @@ namespace MediBook.ViewModels
         public string FullName { get; set; } = string.Empty;
         public string Email { get; set; } = string.Empty;
         public string InsuranceProvider { get; set; }
-        public string InsuranceMemberNumber { get; set; }
+        public string InsurancePolicyNumber { get; set; }
         public string CurrentProfilePicture { get; set; }
 
         public IFormFile ProfilePicture { get; set; }
