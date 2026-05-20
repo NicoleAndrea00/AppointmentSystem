@@ -42,6 +42,41 @@ namespace MediBook.Controllers
 
             return View(appointments);
         }
+        // GET: /Admin/Calendar
+        public async Task<IActionResult> Calendar()
+        {
+            if (!IsAdmin())
+                return RedirectToAction("Login", "Account");
+
+            return View();
+        }
+
+        // GET: /Admin/CalendarEvents
+        public async Task<IActionResult> CalendarEvents()
+        {
+            if (!IsAdmin())
+                return Unauthorized();
+
+            var appointments = await _context.Appointments
+                .Include(a => a.Patient)
+                .Include(a => a.Clinician)
+                .ThenInclude(c => c.User)
+                .ToListAsync();
+
+            var events = appointments.Select(a => new
+            {
+                id = a.Id,
+                title = $"{a.Patient.FullName} - Dr. {a.Clinician.User.FullName}",
+                start = a.AppointmentDate.ToString("yyyy-MM-ddTHH:mm:ss"),
+                end = a.AppointmentDate.AddMinutes(30).ToString("yyyy-MM-ddTHH:mm:ss"),
+                color = a.Status == "Confirmed" ? "#198754" :
+                        a.Status == "Cancelled" ? "#dc3545" :
+                        a.Status == "Completed" ? "#6c757d" : "#0d6efd",
+                extendedProps = new { status = a.Status, consultationType = a.ConsultationType }
+            });
+
+            return Json(events);
+        }
 
         // GET: /Admin/Create
         public async Task<IActionResult> Create()

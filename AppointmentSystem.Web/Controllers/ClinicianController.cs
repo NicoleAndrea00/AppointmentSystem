@@ -223,6 +223,44 @@ namespace MediBook.Controllers
 
             return View(model);
         }
+        // GET: /Clinician/Calendar
+        public async Task<IActionResult> Calendar()
+        {
+            if (!IsClinician())
+                return RedirectToAction("Login", "Account");
+
+            return View();
+        }
+
+        // GET: /Clinician/CalendarEvents
+        public async Task<IActionResult> CalendarEvents()
+        {
+            if (!IsClinician())
+                return Unauthorized();
+
+            var userId = HttpContext.Session.GetInt32("UserId");
+            var clinician = await _context.Clinicians
+                .FirstOrDefaultAsync(c => c.UserId == userId);
+
+            var appointments = await _context.Appointments
+                .Include(a => a.Patient)
+                .Where(a => a.ClinicianId == clinician!.Id)
+                .ToListAsync();
+
+            var events = appointments.Select(a => new
+            {
+                id = a.Id,
+                title = $"{a.Patient.FullName} - {a.ConsultationType}",
+                start = a.AppointmentDate.ToString("yyyy-MM-ddTHH:mm:ss"),
+                end = a.AppointmentDate.AddMinutes(30).ToString("yyyy-MM-ddTHH:mm:ss"),
+                color = a.Status == "Confirmed" ? "#198754" :
+                        a.Status == "Cancelled" ? "#dc3545" :
+                        a.Status == "Completed" ? "#6c757d" : "#0d6efd",
+                extendedProps = new { status = a.Status, consultationType = a.ConsultationType }
+            });
+
+            return Json(events);
+        }
 
         // POST: /Clinician/Profile
         [HttpPost]
