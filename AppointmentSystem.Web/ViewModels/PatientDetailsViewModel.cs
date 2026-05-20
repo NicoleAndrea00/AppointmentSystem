@@ -17,7 +17,8 @@ namespace MediBook.ViewModels
         public DateTime AppointmentDate { get; set; }
         public string Status { get; set; } = string.Empty;
         public string Notes { get; set; } = string.Empty;
-        public string ClinicalNotes { get; set; } = string.Empty;
+        public string ClinicianNotes { get; set; } = string.Empty;
+        public string CancellationReason { get; set; }
 
 
 

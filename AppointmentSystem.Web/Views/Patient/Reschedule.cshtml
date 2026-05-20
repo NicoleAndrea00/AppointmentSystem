@@ -1,0 +1,38 @@
+﻿@model MediBook.ViewModels.RescheduleAppointmentViewModel
+
+@{
+    ViewData["Title"] = "Reschedule Appointment";
+}
+
+<div class="row justify-content-center mt-4">
+    <div class="col-md-6">
+        <div class="card shadow">
+            <div class="card-header bg-warning">
+                <h4 class="mb-0">Reschedule Appointment</h4>
+            </div>
+            <div class="card-body">
+                <p class="text-muted">Clinician: <strong>Dr. @Model.ClinicianName</strong></p>
+                <p class="text-muted">Current Date: <strong>@Model.CurrentDate.ToString("dd/MM/yyyy HH:mm")</strong></p>
+
+                <form asp-action="Reschedule" method="post">
+                    @Html.AntiForgeryToken()
+                    <input type="hidden" asp-for="AppointmentId" />
+
+                    <div asp-validation-summary="All" class="text-danger mb-3"></div>
+
+                    <div class="mb-3">
+                        <label asp-for="NewAppointmentDate" class="form-label">New Date & Time</label>
+                        <input asp-for="NewAppointmentDate" type="datetime-local" class="form-control"
+                               min="@DateTime.Now.ToString("yyyy-MM-ddTHH:mm")" />
+                        <span asp-validation-for="NewAppointmentDate" class="text-danger"></span>
+                    </div>
+
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-warning">Confirm Reschedule</button>
+                        <a asp-action="Index" class="btn btn-outline-secondary">Cancel</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

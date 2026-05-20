@@ -114,15 +114,99 @@ namespace MediBook.Controllers
             var userId = HttpContext.Session.GetInt32("UserId");
 
             var appointment = await _context.Appointments
+                .Include(a => a.Clinician)
+                .ThenInclude(c => c.User)
                 .FirstOrDefaultAsync(a => a.Id == id && a.PatientId == userId);
 
             if (appointment == null)
                 return RedirectToAction("Index");
 
+            var model = new CancelAppointment
+            {
+                AppointmentId = id,
+                ClinicianName = appointment.Clinician.User.FullName,
+                AppointmentDate = appointment.AppointmentDate
+            };
+
+            return View(model);
+        }
+
+        // POST: /Patient/Cancel/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Cancel(CancelAppointment model)
+        {
+            if (!IsPatient())
+                return RedirectToAction("Login", "Account");
+
+            if (!ModelState.IsValid)
+                return View(model);
+
+            var userId = HttpContext.Session.GetInt32("UserId");
+
+            var appointment = await _context.Appointments
+                .FirstOrDefaultAsync(a => a.Id == model.AppointmentId && a.PatientId == userId);
+
+            if (appointment == null)
+                return RedirectToAction("Index");
+
             appointment.Status = "Cancelled";
+            appointment.CancellationReason = model.CancellationReason;
             await _context.SaveChangesAsync();
 
             TempData["Success"] = "Appointment cancelled successfully!";
+            return RedirectToAction("Index");
+        }
+        public async Task<IActionResult> Reschedule(int id)
+        {
+            if (!IsPatient())
+                return RedirectToAction("Login", "Account");
+
+            var userId = HttpContext.Session.GetInt32("UserId");
+
+            var appointment = await _context.Appointments
+                .Include(a => a.Clinician)
+                .ThenInclude(c => c.User)
+                .FirstOrDefaultAsync(a => a.Id == id && a.PatientId == userId);
+
+            if (appointment == null || appointment.Status == "Cancelled" || appointment.Status == "Completed")
+                return RedirectToAction("Index");
+
+            var model = new RescheduleAppointmentViewModel
+            {
+                AppointmentId = id,
+                ClinicianName = appointment.Clinician.User.FullName,
+                CurrentDate = appointment.AppointmentDate,
+                NewAppointmentDate = appointment.AppointmentDate
+            };
+
+            return View(model);
+        }
+
+        // POST: /Patient/Reschedule/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Reschedule(RescheduleAppointmentViewModel model)
+        {
+            if (!IsPatient())
+                return RedirectToAction("Login", "Account");
+
+            if (!ModelState.IsValid)
+                return View(model);
+
+            var userId = HttpContext.Session.GetInt32("UserId");
+
+            var appointment = await _context.Appointments
+                .FirstOrDefaultAsync(a => a.Id == model.AppointmentId && a.PatientId == userId);
+
+            if (appointment == null)
+                return RedirectToAction("Index");
+
+            appointment.AppointmentDate = model.NewAppointmentDate;
+            appointment.Status = "Scheduled";
+            await _context.SaveChangesAsync();
+
+            TempData["Success"] = "Appointment rescheduled successfully!";
             return RedirectToAction("Index");
         }
         // GET: /Patient/Profile
