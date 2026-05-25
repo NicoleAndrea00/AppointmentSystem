@@ -18,11 +18,14 @@ jobs:
       with:
         dotnet-version: 10.0.x
 
-    - name: Restore dependencies
-      run: dotnet restore
+    - name: Restore MediBook
+      run: dotnet restore AppointmentSystem.Web/MediBook.csproj
 
-    - name: Build
-      run: dotnet build --no-restore
+    - name: Build MediBook
+      run: dotnet build AppointmentSystem.Web/MediBook.csproj --no-restore
+
+    - name: Restore Tests
+      run: dotnet restore Medibook.Tests/Medibook.Tests.csproj
 
     - name: Run unit tests
-      run: dotnet test Medibook.Tests/Medibook.Tests.csproj --no-build --verbosity normal
+      run: dotnet test Medibook.Tests/Medibook.Tests.csproj --verbosity normal
