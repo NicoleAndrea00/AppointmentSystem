@@ -36,7 +36,7 @@ namespace MediBook.Controllers
                 .ToListAsync();
 
             ViewBag.UserName = HttpContext.Session.GetString("UserName");
-            ViewBag.Specialty = clinician.Speciality;
+            ViewBag.Speciality = clinician.Speciality;
             ViewBag.ProfilePicture = HttpContext.Session.GetString("ProfilePicture");
 
             return View(appointments);
@@ -219,7 +219,7 @@ namespace MediBook.Controllers
                 FullName = user.FullName,
                 Email = user.Email,
                 CurrentProfilePicture = user.ProfilePicture,
-                Specialty = clinician.Speciality,
+                Speciality = clinician.Speciality,
             };
 
             return View(model);
@@ -317,7 +317,7 @@ namespace MediBook.Controllers
 
             // Update clinician details
             user.FullName = model.FullName;
-            clinician.Speciality = model.Specialty;
+            clinician.Speciality = model.Speciality;
 
             // Handle password change
             if (!string.IsNullOrEmpty(model.NewPassword))
