@@ -38,11 +38,6 @@ jobs:
         package: ./publish
 
     - name: OWASP ZAP Security Scan
-      uses: zaproxy/action-full-scan@v0.10.0
-      with:
-        target: 'https://medibook.health'
-
-- name: OWASP ZAP Security Scan
       if: github.ref == 'refs/heads/main'
       uses: zaproxy/action-full-scan@v0.10.0
       with:
