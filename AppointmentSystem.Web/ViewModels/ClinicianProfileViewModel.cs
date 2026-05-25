@@ -9,7 +9,7 @@ namespace MediBook.ViewModels
         public string CurrentProfilePicture { get; set; }
 
         [Required]
-        public string Specialty { get; set; } = string.Empty;
+        public string Speciality { get; set; } = string.Empty;
 
         public IFormFile ProfilePicture { get; set; }
 
