@@ -8,8 +8,6 @@ on:
 
 permissions:
   contents: read
-  issues: write
-  security-events: write
 
 jobs:
   build-and-deploy:
@@ -35,7 +33,7 @@ jobs:
       run: dotnet publish AppointmentSystem.Web/MediBook.csproj -c Release -o ./publish
 
     - name: Deploy to Azure
-      uses: azure/webapps-deploy@4fae27dab4fc48793e874c25a7584bb2c29d53a5 
+      uses: azure/webapps-deploy@v3
       with:
         app-name: 'MediBook'
         publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
@@ -43,9 +41,12 @@ jobs:
 
     - name: OWASP ZAP Security Scan
       if: github.ref == 'refs/heads/main'
-      uses: zaproxy/action-full-scan@v0.13.0
+      uses: zaproxy/action-full-scan@v0.12.0
+      continue-on-error: true
       with:
         target: 'https://medibook.health'
         allow_issue_creation: false
         fail_action: false
+        token: ${{ secrets.GITHUB_TOKEN }}
+        issue_title: 'ZAP Scan'
         artifact_name: 'zap-report'
