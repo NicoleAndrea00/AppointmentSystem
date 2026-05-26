@@ -31,7 +31,7 @@ jobs:
       run: dotnet publish AppointmentSystem.Web/MediBook.csproj -c Release -o ./publish
 
     - name: Deploy to Azure
-      uses: azure/webapps-deploy@v3
+      uses: azure/webapps-deploy@4fae27dab4fc48793e874c25a7584bb2c29d53a5 
       with:
         app-name: 'MediBook'
         publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
