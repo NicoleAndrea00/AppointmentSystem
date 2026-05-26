@@ -43,3 +43,4 @@ jobs:
       with:
         target: 'https://medibook.health'
         allow_issue_creation: false
+        fail_action: false
