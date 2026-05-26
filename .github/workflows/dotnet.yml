@@ -6,10 +6,14 @@ on:
   pull_request:
     branches: [ "main" ]
 
+permissions:
+  contents: read
+  issues: write
+  security-events: write
+
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
-
     steps:
     - uses: actions/checkout@v4
 
@@ -39,7 +43,9 @@ jobs:
 
     - name: OWASP ZAP Security Scan
       if: github.ref == 'refs/heads/main'
-      uses: zaproxy/action-full-scan@v0.10.0
+      uses: zaproxy/action-full-scan@v0.12.0
       with:
         target: 'https://medibook.health'
         allow_issue_creation: false
+        fail_action: false
+        artifact_name: 'zap-report'

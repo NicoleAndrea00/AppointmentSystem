@@ -61,6 +61,29 @@
             </div>
         </div>
     </div>
+    <!-- Charts Row -->
+    <div class="row mb-4">
+        <div class="col-md-6">
+            <div class="card shadow">
+                <div class="card-header bg-light">
+                    <h5 class="mb-0">Appointments by Status</h5>
+                </div>
+                <div class="card-body">
+                    <canvas id="statusChart" height="200"></canvas>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card shadow">
+                <div class="card-header bg-light">
+                    <h5 class="mb-0">Consultation Types</h5>
+                </div>
+                <div class="card-body">
+                    <canvas id="typeChart" height="200"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <!-- Appointments Table -->
     @if (!Model.Any())
@@ -107,6 +130,56 @@
                     }
                 </tbody>
             </table>
+            }
         </div>
     }
 </div>
+
+@section Scripts {
+    <script>
+        // Appointments by Status - Pie Chart
+        const statusCtx = document.getElementById('statusChart').getContext('2d');
+        new Chart(statusCtx, {
+            type: 'pie',
+            data: {
+                labels: ['Scheduled', 'Confirmed', 'Cancelled', 'Completed'],
+                datasets: [{
+                    data: [
+                        @ViewBag.ScheduledCount,
+                        @ViewBag.ConfirmedCount,
+                        @ViewBag.CancelledCount,
+                        @ViewBag.CompletedCount
+                    ],
+                    backgroundColor: ['#0d6efd', '#198754', '#dc3545', '#6c757d']
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: { legend: { position: 'bottom' } }
+            }
+        });
+
+        // Consultation Types - Bar Chart
+        const typeCtx = document.getElementById('typeChart').getContext('2d');
+        new Chart(typeCtx, {
+            type: 'bar',
+            data: {
+                labels: ['Face to Face', 'Video Call'],
+                datasets: [{
+                    label: 'Number of Appointments',
+                    data: [
+                        @ViewBag.FaceToFaceCount,
+                        @ViewBag.VideoCallCount
+                    ],
+                    backgroundColor: ['#0d6efd', '#0dcaf0']
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: { legend: { display: false } },
+                scales: { y: { beginAtZero: true, ticks: { stepSize: 1 } } }
+            }
+        });
+    </script>
+}
+

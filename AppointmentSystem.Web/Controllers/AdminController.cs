@@ -39,6 +39,9 @@ namespace MediBook.Controllers
             ViewBag.ScheduledCount = appointments.Count(a => a.Status == "Scheduled");
             ViewBag.ConfirmedCount = appointments.Count(a => a.Status == "Confirmed");
             ViewBag.CancelledCount = appointments.Count(a => a.Status == "Cancelled");
+            ViewBag.CompletedCount = appointments.Count(a => a.Status == "Completed");
+            ViewBag.FaceToFaceCount = appointments.Count(a => a.ConsultationType == "Face to Face");
+            ViewBag.VideoCallCount = appointments.Count(a => a.ConsultationType == "Video Call");
 
             return View(appointments);
         }
