@@ -6,7 +6,14 @@ namespace MediBook.Playwright
 {
     public class MediBookTests : PageTest
     {
-        private const string BaseUrl = "https://medibook20260516162650-h4gnhva2ejcqedg0.canadacentral-01.azurewebsites.net";
+        private string BaseUrl = "https://medibook.health";
+        public override BrowserNewContextOptions ContextOptions()
+        {
+            return new BrowserNewContextOptions
+            {
+                IgnoreHTTPSErrors = true
+            };
+        }
 
         // Test 1 - Login page loads
         [Test]
@@ -59,7 +66,7 @@ namespace MediBook.Playwright
             await Page.FillAsync("input[name='Password']", "Patient123");
             await Page.ClickAsync("button[type='submit']");
             var heading = Page.Locator("h2");
-            await Expect(heading).ToContainTextAsync("Welcome");
+            await Expect(heading).ToContainTextAsync("Nicole Del Rosario!");
         }
     }
 }
