@@ -9,7 +9,9 @@ namespace MediBook.ViewModels
         public int ClinicianId { get; set;  }
         [Required]
         [DataType(DataType.DateTime)]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-ddTHH:mm}", ApplyFormatInEditMode = true)]
         [CustomValidation(typeof(BookAppointment), "ValidateFutureDate")]
+
         public DateTime AppointmentDate { get; set; } = DateTime.Now;
         public static ValidationResult ValidateFutureDate(DateTime date, ValidationContext context)
         {
