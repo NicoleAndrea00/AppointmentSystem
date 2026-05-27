@@ -1,43 +1,62 @@
 name: MediBook CI/CD
+
 on:
   push:
     branches: [ "main" ]
   pull_request:
     branches: [ "main" ]
   workflow_dispatch:
+
 permissions:
   contents: read
+  issues: write
+  security-events: write
+
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
+
     steps:
-    - uses: actions/checkout@v4
+    - name: Checkout code
+      uses: actions/checkout@v4
+
     - name: Setup .NET
       uses: actions/setup-dotnet@v4
       with:
-        dotnet-version: 10.0.x
+        dotnet-version: 8.0.x
+
     - name: Restore MediBook
       run: dotnet restore AppointmentSystem.Web/MediBook.csproj
+
     - name: Build MediBook
-      run: dotnet build AppointmentSystem.Web/MediBook.csproj --no-restore
+      run: dotnet build AppointmentSystem.Web/MediBook.csproj --configuration Release --no-restore
+
     - name: Run unit tests
-      run: dotnet test Medibook.Tests/Medibook.Tests.csproj --verbosity normal
+      run: dotnet test Medibook.Tests/Medibook.Tests.csproj --configuration Release --no-build --verbosity normal
+
     - name: Publish MediBook
-      run: dotnet publish AppointmentSystem.Web/MediBook.csproj -c Release -o ./publish
-    - name: Deploy to Azure
+      run: dotnet publish AppointmentSystem.Web/MediBook.csproj --configuration Release --output ./publish
+
+    - name: Upload build artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: medibook-publish
+        path: ./publish
+
+    - name: Deploy to Azure Web App
       uses: azure/webapps-deploy@v3
       with:
         app-name: 'MediBook'
         publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
         package: ./publish
+
     - name: OWASP ZAP Security Scan
       if: github.ref == 'refs/heads/main'
-      uses: zaproxy/action-full-scan@v0.12.0 
+      uses: zaproxy/action-full-scan@v0.12.0
       continue-on-error: true
-      env:
-        GITHUB_TOKEN: ""
       with:
         target: 'https://medibook.health'
         fail_action: false
         cmd_options: '-I'
         artifact_name: 'zap-report'
+        token: ${{ secrets.GITHUB_TOKEN }}
