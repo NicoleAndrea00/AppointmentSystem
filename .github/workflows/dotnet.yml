@@ -61,3 +61,4 @@ jobs:
         target: 'http://medibook.health'
         fail_action: false
         cmd_options: '-I'
+        artifact_name: 'zap-report'
