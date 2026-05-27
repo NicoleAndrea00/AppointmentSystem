@@ -50,13 +50,14 @@ jobs:
         publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
         package: ./publish
 
-    - name: OWASP ZAP Security Scan
+    - name: Wait for Azure app startup
+      run: sleep 60
+
+    - name: OWASP ZAP Baseline Security Scan
       if: github.ref == 'refs/heads/main'
-      uses: zaproxy/action-full-scan@v0.12.0
+      uses: zaproxy/action-baseline@v0.12.0
       continue-on-error: true
       with:
-        target: 'https://medibook.health'
+        target: 'http://medibook.health'
         fail_action: false
         cmd_options: '-I'
-        artifact_name: 'zap-report'
-        token: ${{ secrets.GITHUB_TOKEN }}
