@@ -57,7 +57,7 @@ jobs:
 
     - name: OWASP ZAP Baseline Security Scan
       if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
-      uses: zaproxy/action-baseline@v0.12.0
+      uses: zaproxy/action-baseline@v0.15.0
       continue-on-error: true
       with:
         target: 'https://medibook-gpese2gnhcg0ftbe.ukwest-01.azurewebsites.net'
