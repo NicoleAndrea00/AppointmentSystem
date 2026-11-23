@@ -4,10 +4,7 @@ using System.Text.Json;
 class Program
 {
     static readonly HttpClient client = new HttpClient();
-    static readonly string baseUrl = "https://localhost:72
-        
-        
-        1/api";
+    static readonly string baseUrl = "https://medibook-gpese2gnhcg0ftbe.ukwest-01.azurewebsites.net/api";
 
     static async Task Main(string[] args)
     {
